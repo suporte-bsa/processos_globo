@@ -18,9 +18,8 @@ def hello():
                 current_model = Processos.objects.get(incidente_id=incidente_string)
     
                 #atualiza-se a data e o andamento dos processos:                
-                nova_data_atualizacao = get_data_atualizacao(incidente_string)
+                nova_data_atualizacao, nova_descricao_atualizacao = get_data_atualizacao(incidente_string)
                 print(nova_data_atualizacao)
-                nova_descricao_atualizacao = get_descricao_atualizacao(incidente_string)
                 print(nova_descricao_atualizacao)
                 if (nova_data_atualizacao != current_model.data_atualizacao) or (nova_descricao_atualizacao != current_model.descricao_atualizacao):
                     print("hehe")
@@ -40,3 +39,34 @@ def hello():
         print("Erro no update!")
         print(e)
     
+@shared_task
+def bot_stf():
+    incidentes = Processos.objects.all().values('incidente_id')
+        #inicia-se uma string vazia
+    incidente = "5899439"
+        #então pra cada incidente filtrado:
+    try:
+            #acha-se apenas os números do queryset:
+            #transforma-se esse a lista resultante em string:
+        current_model = Processos.objects.get(incidente_id=incidente)
+    
+                #atualiza-se a data e o andamento dos processos:                
+        nova_data_atualizacao, nova_descricao_atualizacao = get_data_atualizacao(incidente_string)
+        print(nova_data_atualizacao)
+        print(nova_descricao_atualizacao)
+        if (nova_data_atualizacao != current_model.data_atualizacao) or (nova_descricao_atualizacao != current_model.descricao_atualizacao):
+            print("hehe")
+                #então, pega-se cada incidente
+            update = Processos.objects.get(incidente_id=incidente)
+                #atualiza-se os fields na database
+            current_model.data_atualizacao = nova_data_atualizacao
+            current_model.descricao_atualizacao = nova_descricao_atualizacao   
+                #fields são salvos na database
+            try:
+                enviar_notificacoes(str(current_model.classe), str(current_model.numero), str(current_model.descricao), str(current_model.descricao_atualizacao), str(current_model.data_atualizacao), incidente, str(current_model.emails))
+            except Exception as e:
+                print(e)
+            current_model.save()
+    except Exception as e:
+        print("Erro no update!")
+        print(e)
