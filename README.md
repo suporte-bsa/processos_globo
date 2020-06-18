@@ -56,7 +56,7 @@ Para ver o que está acontecendo:
 docker-compose logs
 ```
 
-#### Task 
+#### Task para enviar e-mail
 A atualização de processos ocorre a cada uma hora. A configuração de crontab pode ser modificada em "settings.py". Para mais informações, veja a [documentação do **Celery**](https://docs.celeryproject.org/en/latest/userguide/periodic-tasks.html).
 
 Para testar a task:
@@ -77,3 +77,34 @@ python manage.py shell
 ```sh
 >> hello()
 ```
+
+#### Task para enviar notificações por um Bot em um grupo do Telegram
+
+Para enviar notificações por um Bot para um grupo do Telegram:
+
+- Entre em contado com o BotFather no telegram e insira o seguinte comando:
+
+```
+/newbot
+
+```
+- Escolha um nome e um username
+
+Então, o token do novo bot será informado.
+
+- Adicione o bot recém criado em no grupo desejado
+
+- Acesse https://api.telegram.org/bot<token>/getUpdates
+
+Assim, você descobrirá o chat_id
+
+- Substitua os valores em utils.py:
+
+```
+bot_token = 'token'
+bot_chatID = 'chat_id'
+```
+
+- Teste a task "bot_stf";
+
+- Inclua a task em settings.py.
