@@ -84,17 +84,15 @@ Para enviar notificações por um Bot para um grupo do Telegram:
 
 - Entre em contado com o BotFather no telegram e insira o seguinte comando:
 
-```
-/newbot
+`/newbot`
 
-```
 - Escolha um nome e um username
 
 Então, o token do novo bot será informado.
 
 - Adicione o bot recém criado em no grupo desejado
 
-- Acesse https://api.telegram.org/bot<token>/getUpdates
+- Acesse `https://api.telegram.org/bot<token>/getUpdates` (substitua `<token>` com o seu token);
 
 Assim, você descobrirá o chat_id
 
